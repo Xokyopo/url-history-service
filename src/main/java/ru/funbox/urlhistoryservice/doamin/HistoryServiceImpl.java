@@ -1,6 +1,7 @@
 package ru.funbox.urlhistoryservice.doamin;
 
 import ru.funbox.urlhistoryservice.dao.HistoryRepository;
+import ru.funbox.urlhistoryservice.utils.TimeUtils;
 import ru.funbox.urlhistoryservice.utils.UrlUtils;
 
 import javax.inject.Inject;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 
 @Singleton
 public class HistoryServiceImpl implements HistoryService {
+    private final TimeUtils timeUtils;
     private final UrlUtils urlUtils;
     private final HistoryRepository historyRepository;
 
@@ -18,16 +20,16 @@ public class HistoryServiceImpl implements HistoryService {
     public HistoryServiceImpl(HistoryRepository historyRepository) {
         this.historyRepository = historyRepository;
         this.urlUtils = new UrlUtils();
+        this.timeUtils = new TimeUtils();
     }
 
     @Override
     public void saveVisitedLinks(List<String> links) {
         this.validateLinks(links);
 
-        long currentTime = System.currentTimeMillis();
         List<String> domains = links.stream().map(this.urlUtils::extractDomain).collect(Collectors.toList());
 
-        this.historyRepository.saveVisitedDomainsInTime(domains, currentTime);
+        this.historyRepository.saveVisitedDomainsInTime(domains, this.timeUtils.getCurrentTime());
     }
 
     @Override
@@ -41,7 +43,7 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     private void validateTimeRange(long from, long to) {
-        if (to < from) throw new DomainException(String.format("Invalid time range from = %s to = %s", from , to));
+        if (this.timeUtils.isValidTimeRange(from, to)) throw new DomainException(String.format("Invalid time range from = %s to = %s", from , to));
     }
 
     private void validateLinks(List<String> links) {
