@@ -43,7 +43,7 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     private void validateTimeRange(long from, long to) {
-        if (this.timeUtils.isValidTimeRange(from, to)) throw new DomainException(String.format("Invalid time range from = %s to = %s", from , to));
+        if (!this.timeUtils.isValidTimeRange(from, to)) throw new DomainException(String.format("Invalid time range from = %s to = %s", from , to));
     }
 
     private void validateLinks(List<String> links) {
