@@ -2,6 +2,7 @@ package ru.funbox.urlhistoryservice.dao;
 
 import io.quarkus.redis.client.RedisClient;
 import io.vertx.redis.client.Response;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -12,12 +13,12 @@ import java.util.stream.Collectors;
 @Singleton
 public class RedisHistoryRepository implements HistoryRepository {
     private final RedisClient redisClient;
-    private String groupName;
+    private final String groupName;
 
     @Inject
-    public RedisHistoryRepository(RedisClient redisClient) {
+    public RedisHistoryRepository(RedisClient redisClient, @ConfigProperty(name = "redis.repositories.urlhistory", defaultValue = "urlHistory") String groupName) {
         this.redisClient = redisClient;
-        this.groupName = "urlHistory";
+        this.groupName = groupName;
     }
 
     @Override
