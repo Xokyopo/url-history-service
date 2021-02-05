@@ -5,5 +5,5 @@ import java.util.Map;
 
 public interface HistoryRepository {
     void saveVisitedDomainsInTime(List<String> domains, long time);
-    Map<Long, List<String>> getVisitedDomainsBetweenTime(long from, long to);
+    List<String> getVisitedDomainsBetweenTime(long from, long to);
 }

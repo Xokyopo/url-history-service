@@ -6,7 +6,6 @@ import ru.funbox.urlhistoryservice.utils.UrlUtils;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,8 +35,7 @@ public class HistoryServiceImpl implements HistoryService {
     public List<String> getVisitedDomainsBetweenTime(long from, long to) {
         this.validateTimeRange(from, to);
 
-        return this.historyRepository.getVisitedDomainsBetweenTime(from, to).values().stream()
-                .flatMap(Collection::stream)
+        return this.historyRepository.getVisitedDomainsBetweenTime(from, to).stream()
                 .distinct()
                 .collect(Collectors.toList());
     }
