@@ -16,7 +16,8 @@ public class RedisHistoryRepository implements HistoryRepository {
     private final String groupName;
 
     @Inject
-    public RedisHistoryRepository(RedisClient redisClient, @ConfigProperty(name = "redis.repositories.urlhistory", defaultValue = "urlHistory") String groupName) {
+    public RedisHistoryRepository(RedisClient redisClient,
+                                  @ConfigProperty(name = "redis.repositories.urlhistory", defaultValue = "urlHistory") String groupName) {
         this.redisClient = redisClient;
         this.groupName = groupName;
     }
@@ -32,7 +33,11 @@ public class RedisHistoryRepository implements HistoryRepository {
             command.add(domain);
         });
 
-        this.redisClient.zadd(command);
+        try {
+            this.redisClient.zadd(command);
+        } catch (Exception e) {
+            throw new DaoException("Redis service not found");
+        }
     }
 
     @Override
@@ -43,9 +48,12 @@ public class RedisHistoryRepository implements HistoryRepository {
         command.add(Long.toString(from));
         command.add(Long.toString(to));
 
-
-        return this.redisClient.zrangebyscore(command).stream()
-                .map(Response::toString)
-                .collect(Collectors.toList());
+        try {
+            return this.redisClient.zrangebyscore(command).stream()
+                    .map(Response::toString)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new DaoException("Redis service not found");
+        }
     }
 }
