@@ -5,6 +5,13 @@ import java.util.List;
 public class VisitedLinks {
     private List<String> links;
 
+    public VisitedLinks() {
+    }
+
+    public VisitedLinks(List<String> links) {
+        this.links = links;
+    }
+
     public List<String> getLinks() {
         return links;
     }
