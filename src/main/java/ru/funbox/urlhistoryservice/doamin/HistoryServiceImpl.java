@@ -42,6 +42,6 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     private void validateLinks(List<String> links) {
-        if (!links.stream().allMatch(this.urlUtils::isUrlLink)) throw new DomainException("Оne of your strings is not a valid url");
+        if (links == null || !links.stream().allMatch(this.urlUtils::isUrlLink)) throw new DomainException("Оne of your strings is not a valid url");
     }
 }
