@@ -1,7 +1,6 @@
 package ru.funbox.urlhistoryservice.doamin;
 
 import ru.funbox.urlhistoryservice.dao.HistoryRepository;
-import ru.funbox.urlhistoryservice.utils.TimeUtils;
 import ru.funbox.urlhistoryservice.utils.UrlUtils;
 
 import javax.inject.Inject;
@@ -11,7 +10,6 @@ import java.util.stream.Collectors;
 
 @Singleton
 public class HistoryServiceImpl implements HistoryService {
-    private final TimeUtils timeUtils;
     private final UrlUtils urlUtils;
     private final HistoryRepository historyRepository;
 
@@ -19,7 +17,6 @@ public class HistoryServiceImpl implements HistoryService {
     public HistoryServiceImpl(HistoryRepository historyRepository) {
         this.historyRepository = historyRepository;
         this.urlUtils = new UrlUtils();
-        this.timeUtils = new TimeUtils();
     }
 
     @Override
@@ -28,7 +25,7 @@ public class HistoryServiceImpl implements HistoryService {
 
         List<String> domains = links.stream().map(this.urlUtils::extractDomain).collect(Collectors.toList());
 
-        this.historyRepository.saveVisitedDomainsInTime(domains, this.timeUtils.getCurrentTime());
+        this.historyRepository.saveVisitedDomainsInTime(domains, System.currentTimeMillis());
     }
 
     @Override
@@ -41,10 +38,10 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     private void validateTimeRange(long from, long to) {
-        if (!this.timeUtils.isValidTimeRange(from, to)) throw new DomainException(String.format("Invalid time range from = %s to = %s", from , to));
+        if (from > to) throw new DomainException(String.format("Invalid time range from = %s to = %s", from , to));
     }
 
     private void validateLinks(List<String> links) {
-        if (!links.stream().allMatch(this.urlUtils::isUrlLink)) throw new DomainException("Оne of your strings is not a url");
+        if (!links.stream().allMatch(this.urlUtils::isUrlLink)) throw new DomainException("Оne of your strings is not a valid url");
     }
 }
