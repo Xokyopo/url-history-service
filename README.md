@@ -1,8 +1,14 @@
-# url-history-service project
+## url-history-service project
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+If you want to learn more about Quarkus, please visit its website: https://quarkus.io/.
+
+## Before Use
+
+<p>Before run, needs set redis host address in <i>application.properties</i> as "quarkus.redis.hosts" property</p>
+
+<p>You can also, enter "redis.repositories.urlhistory" and set property name for save in server (defaultValue="urlHistory")</p>
 
 ## Running the application in dev mode
 
@@ -42,16 +48,3 @@ Or, if you don't have GraalVM installed, you can run the native executable build
 You can then execute your native executable with: `./target/url-history-service-1.0.0-SNAPSHOT-runner`
 
 If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.html.
-
-# RESTEasy JAX-RS
-
-<p>A Hello World RESTEasy resource</p>
-
-Guide: https://quarkus.io/guides/rest-json
-
-# RESTEasy JSON serialisation using Jackson
-
-<p>This example demonstrate RESTEasy JSON serialisation by letting you list, add and remove quark types from a list.</p>
-<p><b>Quarked!</b></p>
-
-Guide: https://quarkus.io/guides/rest-json
