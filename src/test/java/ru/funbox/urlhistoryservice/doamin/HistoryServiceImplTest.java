@@ -30,6 +30,14 @@ public class HistoryServiceImplTest {
     }
 
     @Test
+    void saveVisitedLinks_ShouldNotThrowException_WhenGetEmptyList() {
+        Mockito.doThrow(new IllegalArgumentException()).when(this.historyRepository).saveVisitedDomainsInTime(Mockito.anyList(), Mockito.anyLong());
+
+        Executable actual = ()->this.historyService.saveVisitedLinks(List.of());
+        assertDoesNotThrow(actual);
+    }
+
+    @Test
     void getVisitedDomainsBetweenTime_ShouldThrowException_WhenFromIsHighestThenToInTimeRange() {
         Class<DomainException> expected = DomainException.class;
         Executable actual = ()->this.historyService.getVisitedDomainsBetweenTime(System.currentTimeMillis(), 0);
