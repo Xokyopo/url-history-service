@@ -6,6 +6,7 @@ import ru.funbox.urlhistoryservice.utils.UrlUtils;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Singleton
@@ -25,7 +26,7 @@ public class HistoryServiceImpl implements HistoryService {
 
         List<String> domains = links.stream().map(this.urlUtils::extractDomain).collect(Collectors.toList());
 
-        this.historyRepository.saveVisitedDomainsInTime(domains, System.currentTimeMillis());
+        if (!domains.isEmpty()) this.historyRepository.saveVisitedDomainsInTime(domains, System.currentTimeMillis());
     }
 
     @Override
