@@ -11,7 +11,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 
 @QuarkusTest
-public class HistoryControllerImplTest {
+public class HistoryControllerImplIntegrationTest {
 
     @Test
     void saveVisitedLinks_ShouldReturnTrue_WhenSendUrlsAsJSONToVisitedLinkEndpoint() {
